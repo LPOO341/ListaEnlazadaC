@@ -1,3 +1,4 @@
+// Practica 2 Listas Enlazadas Jorge Omar Torres Sosa
 // Inserting and deleting nodes in a list
 #include <stdio.h>
 #include <stdlib.h>
