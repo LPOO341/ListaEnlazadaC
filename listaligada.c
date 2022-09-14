@@ -71,7 +71,7 @@ int main() {
 			case 5:
 				printf("%s", "Introduce un valor entero: ");
 				scanf("\n%d", &var);
-				insertarCentro(&ptrInicial, var, 2); // insertar el elemento en la lista
+				insertarCentro(&ptrInicial, var, 7); // insertar el elemento en la lista
 				imprimeLista(ptrInicial);
 				break;			
 			default:
@@ -138,19 +138,27 @@ void insertarCentro(ptrNodoLista *ptrS, int valor, int posicion) {
 	ptrNodoLista ptrActual;
 	ptrNodoLista ptrAnterior;
 	ptrNuevo = malloc(sizeof(NodoLista)); // crear nodo
-	
+	int i = 1;
 	if(ptrNuevo != NULL) { // hay espacio disponible?
 
 		ptrNuevo->dato = valor; // coloca el valor en el nodo
 		ptrActual = *ptrS;
-	for (int i = 1; i < posicion; i++)
-	{ 
+	while (i < posicion || ptrActual != NULL)
+	{
 		ptrAnterior = ptrActual; // entra al...
 		ptrActual = ptrActual->ptrSiguiente; // ... siguiente nodo
-	}
+		i++;
+	} 
+	if (ptrActual != NULL)
+	{
 		// inserta un nuevo nodo al principio de la lista
 	ptrAnterior->ptrSiguiente = ptrNuevo;
 	ptrNuevo->ptrSiguiente = ptrActual;
+	}else {
+		printf("%d no se inserto. Fuera del rango de valor.\n", valor);
+	}
+		
+	
 	
 
 	}
