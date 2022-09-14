@@ -45,29 +45,26 @@ int main()
 			{
 			case 1:
 				insertar(&ptrInicial, var);
-				imprimeLista(ptrInicial);
 				break;
 			case 2:
 				if (!estaVacia(ptrInicial))
 				{
 					insertarFinal(&ptrInicial, var);
-					imprimeLista(ptrInicial);
 				}
 				else
 				{
-					printf("La lista no esta inicializada, ingrese primer un valr al inicio");
+					printf("La lista no esta inicializada, ingrese primero un valor al inicio");
 				}
 				break;
 			case 3:
 				if (!estaVacia(ptrInicial))
 				{
-					posicion = obtenerEntero("Posicion a insertar: ");
+					posicion = obtenerEntero("Posicion a insertar (2~n):");
 					insertarCentro(&ptrInicial, var, posicion);
-					imprimeLista(ptrInicial);
 				}
 				else
 				{
-					printf("La lista no esta inicializada, ingrese primer un valr al inicio");
+					printf("La lista no esta inicializada, ingrese primero un valor al inicio\n");
 				}
 				break;
 			default:
@@ -108,7 +105,9 @@ int main()
 			instrucciones();
 			break;
 		} // fin del switch
-	}		// fin while
+		imprimeLista(ptrInicial);
+		printf("\n\n");
+	} // fin while
 
 	printf("Termino el programa.");
 	return 0;
@@ -178,20 +177,28 @@ void insertarCentro(ptrNodoLista *ptrS, int valor, int posicion)
 	ptrNodoLista ptrActual;
 	ptrNodoLista ptrAnterior;
 	ptrNuevo = malloc(sizeof(NodoLista)); // crear nodo
-
-	if (ptrNuevo != NULL)
+	int i = 2;
+	if (ptrNuevo != NULL && valor > 1)
 	{ // hay espacio disponible?
 
 		ptrNuevo->dato = valor; // coloca el valor en el nodo
 		ptrActual = *ptrS;
-		for (int i = 1; i < posicion; i++)
+		while (i <= posicion && ptrActual != NULL)
 		{
 			ptrAnterior = ptrActual;						 // entra al...
 			ptrActual = ptrActual->ptrSiguiente; // ... siguiente nodo
+			i++;
 		}
-		// inserta un nuevo nodo al principio de la lista
-		ptrAnterior->ptrSiguiente = ptrNuevo;
-		ptrNuevo->ptrSiguiente = ptrActual;
+		if (ptrActual != NULL && posicion >= 2)
+		{
+			// inserta un nuevo nodo al principio de la lista
+			ptrAnterior->ptrSiguiente = ptrNuevo;
+			ptrNuevo->ptrSiguiente = ptrActual;
+		}
+		else
+		{
+			printf("%d no se inserto. Fuera del rango de valor (2-n)\n", valor);
+		}
 	}
 	else
 	{
@@ -212,7 +219,6 @@ void borrar(ptrNodoLista *ptrS)
 
 void borrarUltimo(ptrNodoLista *ptrS)
 {
-
 	ptrNodoLista ptrAnterior;
 	ptrNodoLista ptrActual;
 
@@ -232,17 +238,25 @@ void borrarCentro(ptrNodoLista *ptrS, int valor)
 {
 	ptrNodoLista ptrAnterior;
 	ptrNodoLista ptrActual;
-
 	ptrActual = *ptrS;
-
-	for (int i = 0; i < valor; i++)
+	int i = 2;
+	while (i <= valor && ptrActual != NULL)
 	{
 		ptrAnterior = ptrActual;						 // entra al...
 		ptrActual = ptrActual->ptrSiguiente; // ... siguiente nodo
+		i++;
+	}
+	if (ptrActual != NULL && valor >= 2)
+	{
+		// inserta un nuevo nodo al principio de la lista
+		ptrAnterior->ptrSiguiente = ptrActual->ptrSiguiente;
+		free(ptrActual); // desata el nodo
+	}
+	else
+	{
+		printf("Fuera del rango de valor (2-n)\n");
 	}
 	// almacena el nodo a eliminar
-	ptrAnterior->ptrSiguiente = ptrActual->ptrSiguiente;
-	free(ptrActual); // desata el nodo
 }
 
 // regrasa 1 si la lista esta vacia de lo contrario 0.
