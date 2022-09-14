@@ -39,7 +39,7 @@ int main()
 		{
 		case 1: // insertar un elemento
 			var = obtenerEntero("Entero a ingresar: ");
-			printf("1. Ingresar al inicio\n2. Ingresar al final\n3. Ingresar al centro");
+			printf("1. Ingresar al inicio\n2. Ingresar al final\n3. Ingresar al centro"); // Menu del tipo de insercion
 			opcion2 = obtenerEntero("opcion: ");
 			switch (opcion2)
 			{
@@ -47,7 +47,7 @@ int main()
 				insertar(&ptrInicial, var);
 				break;
 			case 2:
-				if (!estaVacia(ptrInicial))
+				if (!estaVacia(ptrInicial)) // valida que el arreglo no este vacio antes de insertar en el centro o al final
 				{
 					insertarFinal(&ptrInicial, var);
 				}
@@ -102,7 +102,6 @@ int main()
 			break;
 		default:
 			printf("Opcion invalida.\n");
-			instrucciones();
 			break;
 		} // fin del switch
 		imprimeLista(ptrInicial);
@@ -119,11 +118,10 @@ void instrucciones(void)
 	printf("Introduce una opcion:\n 1. Insertar un elemento a la lista.\n 2. Borrar un elemento de la lista.\n 3: Salir del programa.");
 }
 
-// insertar un valor nuevo en la lista en order
+// insertar un valor nuevo al inicio de la lista
 void insertar(ptrNodoLista *ptrS, int valor)
 {
 	ptrNodoLista ptrNuevo;
-
 	ptrNuevo = malloc(sizeof(NodoLista)); // crear nodo
 
 	if (ptrNuevo != NULL)
@@ -139,7 +137,7 @@ void insertar(ptrNodoLista *ptrS, int valor)
 	}
 }
 
-int obtenerEntero(char mensaje[])
+int obtenerEntero(char mensaje[]) // Elimina la redundacia al obtener los int
 {
 	int var;
 	printf("\n%s", mensaje);
@@ -147,7 +145,7 @@ int obtenerEntero(char mensaje[])
 	return var;
 }
 
-void insertarFinal(ptrNodoLista *ptrS, int valor)
+void insertarFinal(ptrNodoLista *ptrS, int valor) // Inserta un valor al final de la lista
 {
 	ptrNodoLista ptrNuevo;
 	ptrNodoLista ptrActual;
@@ -157,12 +155,11 @@ void insertarFinal(ptrNodoLista *ptrS, int valor)
 	{													// hay espacio disponible?
 		ptrNuevo->dato = valor; // coloca el valor en el nodo
 		ptrActual = *ptrS;
-		while (ptrActual->ptrSiguiente != NULL)
+		while (ptrActual->ptrSiguiente != NULL) // Recorre la lista hasta encontrar el ultimo valor
 		{
 			ptrActual = ptrActual->ptrSiguiente; // ... siguiente nodo
 		}
-		// inserta un nuevo nodo al principio de la lista
-		ptrActual->ptrSiguiente = ptrNuevo;
+		ptrActual->ptrSiguiente = ptrNuevo; // inserta el nuevo nodo al final
 		ptrNuevo->ptrSiguiente = NULL;
 	}
 	else
@@ -178,18 +175,18 @@ void insertarCentro(ptrNodoLista *ptrS, int valor, int posicion)
 	ptrNodoLista ptrAnterior;
 	ptrNuevo = malloc(sizeof(NodoLista)); // crear nodo
 	int i = 2;
-	if (ptrNuevo != NULL && valor > 1)
-	{ // hay espacio disponible?
+	if (ptrNuevo != NULL) // Revisa si hay espacio en memoria
+	{
 
 		ptrNuevo->dato = valor; // coloca el valor en el nodo
 		ptrActual = *ptrS;
-		while (i <= posicion && ptrActual != NULL)
+		while (i <= posicion && ptrActual != NULL) // Iteramos el nodo hasta que se encuentra la posicion pedida o llega al final de la lista
 		{
 			ptrAnterior = ptrActual;						 // entra al...
 			ptrActual = ptrActual->ptrSiguiente; // ... siguiente nodo
 			i++;
 		}
-		if (ptrActual != NULL && posicion >= 2)
+		if (ptrActual != NULL && posicion >= 2) // valida el rango, si posicion es menor dos esta debajo y si ptrActual es nulo esta sobrepasado
 		{
 			// inserta un nuevo nodo al principio de la lista
 			ptrAnterior->ptrSiguiente = ptrNuevo;
@@ -206,7 +203,7 @@ void insertarCentro(ptrNodoLista *ptrS, int valor, int posicion)
 	}
 }
 
-// Borrar una elemento de la lista
+// Borra el primer elemento de la lista
 void borrar(ptrNodoLista *ptrS)
 {
 	ptrNodoLista ptrTemporal;
@@ -217,14 +214,14 @@ void borrar(ptrNodoLista *ptrS)
 	free(ptrTemporal);						 // libera el nodo
 }
 
-void borrarUltimo(ptrNodoLista *ptrS)
+void borrarUltimo(ptrNodoLista *ptrS) // borra el ultim nodo de la lista
 {
 	ptrNodoLista ptrAnterior;
 	ptrNodoLista ptrActual;
 
 	ptrActual = *ptrS;
 
-	while (ptrActual->ptrSiguiente != NULL)
+	while (ptrActual->ptrSiguiente != NULL) // itera la lista hasta llegar al ulimo nodo
 	{
 		ptrAnterior = ptrActual;						 // entra al...
 		ptrActual = ptrActual->ptrSiguiente; // ... siguiente nodo
@@ -234,7 +231,7 @@ void borrarUltimo(ptrNodoLista *ptrS)
 	free(ptrActual); // desata el nodo
 }
 
-void borrarCentro(ptrNodoLista *ptrS, int valor)
+void borrarCentro(ptrNodoLista *ptrS, int valor) // borra un elemeno intermedio de la lista
 {
 	ptrNodoLista ptrAnterior;
 	ptrNodoLista ptrActual;
@@ -248,18 +245,15 @@ void borrarCentro(ptrNodoLista *ptrS, int valor)
 	}
 	if (ptrActual != NULL && valor >= 2)
 	{
-		// inserta un nuevo nodo al principio de la lista
-		ptrAnterior->ptrSiguiente = ptrActual->ptrSiguiente;
-		free(ptrActual); // desata el nodo
+		ptrAnterior->ptrSiguiente = ptrActual->ptrSiguiente; // enlaza el nodo anterior al siguienet
+		free(ptrActual);																		 // desata el nodo
 	}
 	else
 	{
 		printf("Fuera del rango de valor (2-n)\n");
 	}
-	// almacena el nodo a eliminar
 }
 
-// regrasa 1 si la lista esta vacia de lo contrario 0.
 int estaVacia(ptrNodoLista ptrS)
 {
 	return ptrS == NULL;
